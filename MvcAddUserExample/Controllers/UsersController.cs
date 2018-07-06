@@ -6,9 +6,11 @@ using System.Web.Mvc;
 
 namespace MvcAddUserExample.Controllers
 {
+    [Route("~/")]
     public class UsersController : Controller
     {
-        public ActionResult Index()
+        [Route("")]
+        public ActionResult ShowRegistrationForm()
         {
             return View("RegistrationForm");
         }
