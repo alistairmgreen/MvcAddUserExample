@@ -1,4 +1,38 @@
-﻿@{
+﻿@model  MvcAddUserExample.Models.UserRegistrationViewModel
+@{
     ViewBag.Title = "Register a new user";
 }
 <h1>Register a new user account</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.LabelFor(model => model.Email)
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { required = true, placeholder = "username@example.com" } })
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Password)
+        @Html.EditorFor(model => model.Password, new { htmlAttributes = new {
+            required = true,
+            placeholder = "At least 8 characters",
+            minlength = 8
+        }})
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.ConfirmPassword)
+        @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new {
+           required = true,
+           placeholder = "At least 8 characters",
+           minlength = 8
+       }
+   })
+    </div>
+
+    <div>
+        <button type="submit">Create User</button>
+    </div>
+}
