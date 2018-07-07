@@ -17,8 +17,6 @@
 
 namespace MvcAddUserExample.DependencyResolution {
     using StructureMap;
-    using StructureMap.Configuration.DSL;
-    using StructureMap.Graph;
 	
     public class DefaultRegistry : Registry {
         #region Constructors and Destructors
@@ -30,7 +28,6 @@ namespace MvcAddUserExample.DependencyResolution {
                     scan.AssembliesFromApplicationBaseDirectory();
                     scan.WithDefaultConventions();
 					scan.With(new ControllerConvention());
-                    scan.LookForRegistries();
                 });
             //For<IExample>().Use<Example>();
         }
