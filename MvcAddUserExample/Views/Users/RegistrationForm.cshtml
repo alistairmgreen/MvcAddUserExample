@@ -11,6 +11,7 @@
     <div>
         @Html.LabelFor(model => model.Email)
         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { required = true, placeholder = "username@example.com" } })
+        @Html.ValidationMessageFor(model => model.Email)
     </div>
 
     <div>
@@ -20,6 +21,7 @@
             placeholder = "At least 8 characters",
             minlength = 8
         }})
+        @Html.ValidationMessageFor(model => model.Password)
     </div>
 
     <div>
@@ -28,8 +30,8 @@
            required = true,
            placeholder = "At least 8 characters",
            minlength = 8
-       }
-   })
+         }})
+        @Html.ValidationMessageFor(model => model.ConfirmPassword)
     </div>
 
     <div>

@@ -42,6 +42,27 @@ namespace MvcAddUserExample.Tests.Controllers
                 .Which.RouteValues["action"].Should().Be(ActionNames.REGISTRATION_SUCCESS);
         }
 
+        [Test]
+        public void WhenPasswordsDoNotMatchThenFormIsRedisplayedWithError()
+        {
+            var user = new UserRegistrationViewModel
+            {
+                Email = "user@example.com",
+                Password = "valid passphrase",
+                ConfirmPassword = "mistyped passphrase"
+            };
+
+            ActionResult result = controller.PostRegistrationForm(user);
+
+            controller.ModelState.IsValid.Should().BeFalse("because the passwords do not match");
+
+            controller.ModelState.Should().ContainKey("ConfirmPassword", "because the Confirm Password field is incorrect")
+                .WhichValue.Errors.Should().NotBeEmpty("because there was a validation error");
+
+            result.Should().BeOfType<ViewResult>()
+               .Which.ViewName.Should().Be(ViewNames.REGISTRATION_FORM, "because the registration form should be redisplayed");
+        }
+
         private UserRegistrationViewModel ValidUser()
         {
             return new UserRegistrationViewModel

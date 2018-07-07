@@ -19,6 +19,12 @@ namespace MvcAddUserExample.Controllers
         [Route("")]
         public ActionResult PostRegistrationForm(UserRegistrationViewModel viewModel)
         {
+            if (!viewModel.Password.Equals(viewModel.ConfirmPassword, System.StringComparison.Ordinal))
+            {
+                ModelState.AddModelError("ConfirmPassword", "The two passwords do not match.");
+                return View(ViewNames.REGISTRATION_FORM, viewModel);
+            }
+
             return RedirectToAction(ActionNames.REGISTRATION_SUCCESS);
         }
 
