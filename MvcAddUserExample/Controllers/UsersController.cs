@@ -25,6 +25,7 @@ namespace MvcAddUserExample.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("")]
         public async Task<ActionResult> PostRegistrationForm(UserRegistrationViewModel viewModel)
         {

@@ -80,6 +80,16 @@ namespace MvcAddUserExample.Tests.Controllers
                .Which.ViewName.Should().Be(ViewNames.REGISTRATION_FORM, "because the registration form should be redisplayed");
         }
 
+        [Test]
+        public void AntiForgeryTokenIsCheckedForAllPostRequests()
+        {
+            typeof(UsersController).Methods()
+              .ThatAreDecoratedWith<HttpPostAttribute>()
+              .Should()
+              .BeDecoratedWith<ValidateAntiForgeryTokenAttribute>(
+                "because all Actions with HttpPost require ValidateAntiForgeryToken");
+        }
+
         private UserRegistrationViewModel ValidUser()
         {
             return new UserRegistrationViewModel
