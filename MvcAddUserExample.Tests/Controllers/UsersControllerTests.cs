@@ -51,6 +51,15 @@ namespace MvcAddUserExample.Tests.Controllers
         }
 
         [Test]
+        public async Task WhenUserIsSubmittedThenUserServiceIsCalled()
+        {
+            var user = ValidUser();
+            await controller.PostRegistrationForm(user);
+
+            mockUserService.Verify(s => s.AddUserAsync(user.Email, user.Password));
+        }
+
+        [Test]
         public async Task WhenPasswordsDoNotMatchThenFormIsRedisplayedWithError()
         {
             var user = new UserRegistrationViewModel
