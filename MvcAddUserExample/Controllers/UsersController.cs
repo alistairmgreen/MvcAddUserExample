@@ -1,12 +1,21 @@
 ﻿using System.Web.Mvc;
 using MvcAddUserExample.Models;
 using MvcAddUserExample.Constants;
+using MvcAddUserExample.Core.Interfaces;
+using System.Threading.Tasks;
 
 namespace MvcAddUserExample.Controllers
 {
     [Route("~/")]
     public class UsersController : Controller
     {
+        private readonly IUserService userService;
+
+        public UsersController(IUserService userService)
+        {
+            this.userService = userService;
+        }
+
         [HttpGet]
         [Route("")]
         [ActionName(ActionNames.SHOW_REGISTRATION_FORM)]
@@ -17,13 +26,15 @@ namespace MvcAddUserExample.Controllers
 
         [HttpPost]
         [Route("")]
-        public ActionResult PostRegistrationForm(UserRegistrationViewModel viewModel)
+        public async Task<ActionResult> PostRegistrationForm(UserRegistrationViewModel viewModel)
         {
             if (!viewModel.Password.Equals(viewModel.ConfirmPassword, System.StringComparison.Ordinal))
             {
                 ModelState.AddModelError("ConfirmPassword", "The two passwords do not match.");
                 return View(ViewNames.REGISTRATION_FORM, viewModel);
             }
+
+            await userService.AddUserAsync(viewModel.Email, viewModel.Password);
 
             return RedirectToAction(ActionNames.REGISTRATION_SUCCESS);
         }

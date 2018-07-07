@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcAddUserExample.Core", "MvcAddUserExample.Core\MvcAddUserExample.Core.csproj", "{6314C02A-9479-41C7-9AEE-9845A39B8721}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcAddUserExample.Services", "MvcAddUserExample.Services\MvcAddUserExample.Services.csproj", "{F1A33CFD-501D-4A9F-8F82-20FE902CE6FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{5C935C54-9CDC-4BB2-A689-B3189AB571E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C935C54-9CDC-4BB2-A689-B3189AB571E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C935C54-9CDC-4BB2-A689-B3189AB571E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6314C02A-9479-41C7-9AEE-9845A39B8721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6314C02A-9479-41C7-9AEE-9845A39B8721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6314C02A-9479-41C7-9AEE-9845A39B8721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6314C02A-9479-41C7-9AEE-9845A39B8721}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1A33CFD-501D-4A9F-8F82-20FE902CE6FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1A33CFD-501D-4A9F-8F82-20FE902CE6FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1A33CFD-501D-4A9F-8F82-20FE902CE6FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1A33CFD-501D-4A9F-8F82-20FE902CE6FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

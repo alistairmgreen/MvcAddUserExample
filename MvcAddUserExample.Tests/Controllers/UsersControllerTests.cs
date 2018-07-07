@@ -1,7 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using System.Threading.Tasks;
+using System.Web.Mvc;
 using FluentAssertions;
+using Moq;
 using MvcAddUserExample.Constants;
 using MvcAddUserExample.Controllers;
+using MvcAddUserExample.Core.Interfaces;
 using MvcAddUserExample.Models;
 using NUnit.Framework;
 
@@ -11,11 +14,16 @@ namespace MvcAddUserExample.Tests.Controllers
     public class UsersControllerTests
     {
         private UsersController controller;
+        private Mock<IUserService> mockUserService;
 
         [SetUp]
         public void SetUp()
         {
-            controller = new UsersController();
+            mockUserService = new Mock<IUserService>();
+            mockUserService.Setup(s => s.AddUserAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+
+            controller = new UsersController(mockUserService.Object);
         }
 
         [Test]
@@ -35,15 +43,15 @@ namespace MvcAddUserExample.Tests.Controllers
         }
 
         [Test]
-        public void WhenValidUserIsSubmittedThenSuccessPageIsReturned()
+        public async Task WhenValidUserIsSubmittedThenSuccessPageIsReturned()
         {
-            ActionResult result = controller.PostRegistrationForm(ValidUser());
+            ActionResult result = await controller.PostRegistrationForm(ValidUser());
             result.Should().BeOfType<RedirectToRouteResult>()
                 .Which.RouteValues["action"].Should().Be(ActionNames.REGISTRATION_SUCCESS);
         }
 
         [Test]
-        public void WhenPasswordsDoNotMatchThenFormIsRedisplayedWithError()
+        public async Task WhenPasswordsDoNotMatchThenFormIsRedisplayedWithError()
         {
             var user = new UserRegistrationViewModel
             {
@@ -52,7 +60,7 @@ namespace MvcAddUserExample.Tests.Controllers
                 ConfirmPassword = "mistyped passphrase"
             };
 
-            ActionResult result = controller.PostRegistrationForm(user);
+            ActionResult result = await controller.PostRegistrationForm(user);
 
             controller.ModelState.IsValid.Should().BeFalse("because the passwords do not match");
 
