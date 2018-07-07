@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using MvcAddUserExample.Models;
 using MvcAddUserExample.Constants;
-using MvcAddUserExample.Core.Interfaces;
+using MvcAddUserExample.Core.Interfaces.Services;
 using System.Threading.Tasks;
 
 namespace MvcAddUserExample.Controllers

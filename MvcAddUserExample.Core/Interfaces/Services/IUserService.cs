@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MvcAddUserExample.Core.Interfaces
+namespace MvcAddUserExample.Core.Interfaces.Services
 {
     /// <summary>
     /// A service that adds users to the database.

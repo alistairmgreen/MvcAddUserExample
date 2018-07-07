@@ -4,7 +4,7 @@ using FluentAssertions;
 using Moq;
 using MvcAddUserExample.Constants;
 using MvcAddUserExample.Controllers;
-using MvcAddUserExample.Core.Interfaces;
+using MvcAddUserExample.Core.Interfaces.Services;
 using MvcAddUserExample.Models;
 using NUnit.Framework;
 
