@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using MvcAddUserExample.Core.Interfaces.Providers;
 using MvcAddUserExample.Core.Interfaces.Services;
 
 namespace MvcAddUserExample.Services
@@ -7,17 +8,19 @@ namespace MvcAddUserExample.Services
     public class UserService : IUserService
     {
         private readonly IPasswordService passwordService;
+        private readonly IAddUserProvider addUserProvider;
 
-        public UserService(IPasswordService passwordService)
+        public UserService(IPasswordService passwordService, IAddUserProvider addUserProvider)
         {
             this.passwordService = passwordService;
+            this.addUserProvider = addUserProvider;
         }
 
         /// <inheritdoc/>
-        public Task AddUserAsync(string email, string password)
+        public async Task AddUserAsync(string email, string password)
         {
             string hash = passwordService.SaltAndHashPassword(password);
-            return Task.CompletedTask;
+            await addUserProvider.AddUserAsync(email, hash);
         }
     }
 }

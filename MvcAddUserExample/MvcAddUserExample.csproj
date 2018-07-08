@@ -147,6 +147,10 @@
       <Project>{6314c02a-9479-41c7-9aee-9845a39b8721}</Project>
       <Name>MvcAddUserExample.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MvcAddUserExample.Providers\MvcAddUserExample.Providers.csproj">
+      <Project>{7b09519a-bacd-42eb-9244-8d5eaa594d2f}</Project>
+      <Name>MvcAddUserExample.Providers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MvcAddUserExample.Services\MvcAddUserExample.Services.csproj">
       <Project>{f1a33cfd-501d-4a9f-8f82-20fe902ce6ff}</Project>
       <Name>MvcAddUserExample.Services</Name>

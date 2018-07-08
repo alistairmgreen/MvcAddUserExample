@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using System.Threading.Tasks;
 using Moq;
+using MvcAddUserExample.Core.Interfaces.Providers;
 using MvcAddUserExample.Core.Interfaces.Services;
 using NUnit.Framework;
 
@@ -18,6 +14,7 @@ namespace MvcAddUserExample.Services.Tests.UserServiceTests
         private const string MOCK_HASH = "salt and hash";
 
         private Mock<IPasswordService> mockPasswordService;
+        private Mock<IAddUserProvider> mockAddUserProvider;
 
         [SetUp]
         public async Task Setup()
@@ -26,7 +23,11 @@ namespace MvcAddUserExample.Services.Tests.UserServiceTests
             mockPasswordService.Setup(s => s.SaltAndHashPassword(It.IsAny<string>()))
                 .Returns(MOCK_HASH);
 
-            var userService = new UserService(mockPasswordService.Object);
+            mockAddUserProvider = new Mock<IAddUserProvider>();
+            mockAddUserProvider.Setup(p => p.AddUserAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+
+            var userService = new UserService(mockPasswordService.Object, mockAddUserProvider.Object);
 
             await userService.AddUserAsync(EMAIL, PASSWORD);
         }
@@ -35,6 +36,12 @@ namespace MvcAddUserExample.Services.Tests.UserServiceTests
         public void ThenPasswordIsHashed()
         {
             mockPasswordService.Verify(s => s.SaltAndHashPassword(PASSWORD));
+        }
+
+        [Test]
+        public void ThenEmailAddressAndHashedPasswordArePassedToAddUserProvider()
+        {
+            mockAddUserProvider.Verify(p => p.AddUserAsync(EMAIL, MOCK_HASH));
         }
     }
 }

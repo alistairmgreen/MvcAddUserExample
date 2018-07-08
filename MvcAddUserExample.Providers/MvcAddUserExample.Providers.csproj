@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6314C02A-9479-41C7-9AEE-9845A39B8721}</ProjectGuid>
+    <ProjectGuid>{7B09519A-BACD-42EB-9244-8D5EAA594D2F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MvcAddUserExample.Core</RootNamespace>
-    <AssemblyName>MvcAddUserExample.Core</AssemblyName>
+    <RootNamespace>MvcAddUserExample.Providers</RootNamespace>
+    <AssemblyName>MvcAddUserExample.Providers</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,10 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\Providers\IAddUserProvider.cs" />
-    <Compile Include="Interfaces\Services\IPasswordService.cs" />
-    <Compile Include="Interfaces\Services\IUserService.cs" />
+    <Compile Include="AddUserProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MvcAddUserExample.Core\MvcAddUserExample.Core.csproj">
+      <Project>{6314c02a-9479-41c7-9aee-9845a39b8721}</Project>
+      <Name>MvcAddUserExample.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
