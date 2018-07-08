@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Configuration;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
 using MvcAddUserExample.Core.Interfaces.Providers;
 
 namespace MvcAddUserExample.Providers
@@ -10,9 +12,22 @@ namespace MvcAddUserExample.Providers
     public class AddUserProvider : IAddUserProvider
     {
         /// <inheritdoc />
-        public Task AddUserAsync(string email, string passwordHash)
+        public async Task AddUserAsync(string email, string passwordHash)
         {
-            return Task.CompletedTask;
+            var connectionString = ConfigurationManager.ConnectionStrings["UserDatabase"].ConnectionString;
+            using (var connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandType = System.Data.CommandType.Text;
+                    command.CommandText = "INSERT INTO [dbo].[Users] (Email, PasswordHash) VALUES (@email, @passwordhash)";
+                    command.Parameters.Add(new SqlParameter("@email", email));
+                    command.Parameters.Add(new SqlParameter("@passwordhash", passwordHash));
+
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
         }
     }
 }
