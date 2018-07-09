@@ -33,17 +33,26 @@ namespace MvcAddUserExample.Controllers
             if (!viewModel.Password.Equals(viewModel.ConfirmPassword, System.StringComparison.Ordinal))
             {
                 ModelState.AddModelError("ConfirmPassword", "The two passwords do not match.");
-                return View(ViewNames.REGISTRATION_FORM, viewModel);
             }
 
-            try
+            if (ModelState.IsValid)
             {
-                await userService.AddUserAsync(viewModel.Email, viewModel.Password);
+                try
+                {
+                    await userService.AddUserAsync(viewModel.Email, viewModel.Password);
+                }
+                catch (DuplicateEmailException e)
+                {
+                    ModelState.AddModelError("Email", e.Message);
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
                 return RedirectToAction(ActionNames.REGISTRATION_SUCCESS);
             }
-            catch (DuplicateEmailException e)
+            else
             {
-                ModelState.AddModelError("Email", e.Message);
                 return View(ViewNames.REGISTRATION_FORM, viewModel);
             }
         }
