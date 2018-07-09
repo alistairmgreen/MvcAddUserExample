@@ -1,4 +1,8 @@
-﻿@model  MvcAddUserExample.Models.UserRegistrationViewModel
+﻿@using MvcAddUserExample.Models
+@using MvcAddUserExample.Core.Constants
+
+@model  UserRegistrationViewModel
+
 @{
     ViewBag.Title = "Register a new user";
 }
@@ -18,8 +22,8 @@
         @Html.LabelFor(model => model.Password)
         @Html.EditorFor(model => model.Password, new { htmlAttributes = new {
             required = true,
-            placeholder = "At least 8 characters",
-            minlength = 8
+            placeholder = $"At least {PasswordRestrictions.MINIMUM_LENGTH} characters",
+            minlength = PasswordRestrictions.MINIMUM_LENGTH
         }})
         @Html.ValidationMessageFor(model => model.Password)
     </div>
@@ -27,10 +31,11 @@
     <div>
         @Html.LabelFor(model => model.ConfirmPassword)
         @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new {
-           required = true,
-           placeholder = "At least 8 characters",
-           minlength = 8
-         }})
+       required = true,
+       placeholder = "As above",
+       minlength = PasswordRestrictions.MINIMUM_LENGTH
+   }
+   })
         @Html.ValidationMessageFor(model => model.ConfirmPassword)
     </div>
 

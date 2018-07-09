@@ -96,15 +96,45 @@ namespace MvcAddUserExample.Tests.Controllers
         [Test]
         public async Task WhenEmailIsNotValidThenFormIsRedisplayedWithError()
         {
-            var user = ValidUser();
+            var user = new UserRegistrationViewModel
+            {
+                Email = "invalid email",
+                Password = "good password",
+                ConfirmPassword = "good password"
+            };
+
             mockUserService.Setup(s => s.AddUserAsync(It.IsAny<UserToCreate>()))
                 .ThrowsAsync(new InvalidEmailException(user.Email));
 
             ActionResult result = await controller.PostRegistrationForm(user);
 
-            controller.ModelState.IsValid.Should().BeFalse("because the email address is not unique");
+            controller.ModelState.IsValid.Should().BeFalse("because the email address is not valid");
 
-            controller.ModelState.Should().ContainKey("Email", "because the email address is not unique")
+            controller.ModelState.Should().ContainKey("Email", "because the email address is not valid")
+                .WhichValue.Errors.Should().NotBeEmpty("because there was a validation error");
+
+            result.Should().BeOfType<ViewResult>()
+               .Which.ViewName.Should().Be(ViewNames.REGISTRATION_FORM, "because the registration form should be redisplayed");
+        }
+
+        [Test]
+        public async Task WhenPasswordIsTooWeakThenFormIsRedisplayedWithError()
+        {
+            var user = new UserRegistrationViewModel
+            {
+                Email = "user@example.com",
+                Password = "123",
+                ConfirmPassword = "123"
+            };
+
+            mockUserService.Setup(s => s.AddUserAsync(It.IsAny<UserToCreate>()))
+                .ThrowsAsync(new InvalidPasswordException());
+
+            ActionResult result = await controller.PostRegistrationForm(user);
+
+            controller.ModelState.IsValid.Should().BeFalse("because the password is not valid");
+
+            controller.ModelState.Should().ContainKey("Password", "because the password is not valid")
                 .WhichValue.Errors.Should().NotBeEmpty("because there was a validation error");
 
             result.Should().BeOfType<ViewResult>()

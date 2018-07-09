@@ -47,6 +47,10 @@ namespace MvcAddUserExample.Controllers
                 {
                     ModelState.AddModelError("Email", e.Message);
                 }
+                catch (InvalidPasswordException e)
+                {
+                    ModelState.AddModelError("Password", e.Message);
+                }
             }
 
             if (ModelState.IsValid)

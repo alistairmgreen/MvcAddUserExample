@@ -24,6 +24,7 @@ namespace MvcAddUserExample.Services
 
         /// <inheritdoc/>
         /// <exception cref="InvalidEmailException">Thrown if the user's email address is invalid or already exists in the database.</exception>
+        /// <exception cref="InvalidPasswordException">Thrown if the password is too weak.</exception>
         public async Task AddUserAsync(UserToCreate user)
         {
             userValidationService.ValidateUserToCreate(user);

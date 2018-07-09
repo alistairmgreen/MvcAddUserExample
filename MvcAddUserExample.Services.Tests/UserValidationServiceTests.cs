@@ -50,5 +50,16 @@ namespace MvcAddUserExample.Services.Tests
                 .Should().Throw<InvalidEmailException>()
                 .WithMessage("The email address is not valid.");
         }
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("        ")]
+        [TestCase("1234567")]
+        public void WhenPasswordDoesNotContainAtLeast8NonWhitespaceCharactersThenInvalidPasswordExceptionIsThrown(string invalidPassword)
+        {
+            var invalidUser = new UserToCreate(VALID_EMAIL, invalidPassword);
+            userValidationService.Invoking(s => s.ValidateUserToCreate(invalidUser))
+                .Should().Throw<InvalidPasswordException>();
+        }
     }
 }
