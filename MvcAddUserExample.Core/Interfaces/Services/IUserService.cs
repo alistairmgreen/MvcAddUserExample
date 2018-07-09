@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using MvcAddUserExample.Core.Models;
 
 namespace MvcAddUserExample.Core.Interfaces.Services
 {
@@ -10,9 +11,8 @@ namespace MvcAddUserExample.Core.Interfaces.Services
         /// <summary>
         /// Adds a new user to the database.
         /// </summary>
-        /// <param name="email">The user's email address.</param>
-        /// <param name="password">The user's password.</param>
+        /// <param name="user">The user to be added.</param>
         /// <returns>An awaitable task.</returns>
-        Task AddUserAsync(string email, string password);
+        Task AddUserAsync(UserToCreate user);
     }
 }

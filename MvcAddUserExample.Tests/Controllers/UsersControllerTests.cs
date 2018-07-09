@@ -6,6 +6,7 @@ using MvcAddUserExample.Constants;
 using MvcAddUserExample.Controllers;
 using MvcAddUserExample.Core.Exceptions;
 using MvcAddUserExample.Core.Interfaces.Services;
+using MvcAddUserExample.Core.Models;
 using MvcAddUserExample.Models;
 using NUnit.Framework;
 
@@ -21,7 +22,7 @@ namespace MvcAddUserExample.Tests.Controllers
         public void SetUp()
         {
             mockUserService = new Mock<IUserService>();
-            mockUserService.Setup(s => s.AddUserAsync(It.IsAny<string>(), It.IsAny<string>()))
+            mockUserService.Setup(s => s.AddUserAsync(It.IsAny<UserToCreate>()))
                 .Returns(Task.CompletedTask);
 
             controller = new UsersController(mockUserService.Object);
@@ -57,7 +58,8 @@ namespace MvcAddUserExample.Tests.Controllers
             var user = ValidUser();
             await controller.PostRegistrationForm(user);
 
-            mockUserService.Verify(s => s.AddUserAsync(user.Email, user.Password));
+            mockUserService.Verify(s => s.AddUserAsync(
+                It.Is<UserToCreate>(u => u.Email == user.Email && u.Password == user.Password)));
         }
 
         [Test]
@@ -92,11 +94,11 @@ namespace MvcAddUserExample.Tests.Controllers
         }
 
         [Test]
-        public async Task WhenEmailIsNotUniqueThenFormIsRedisplayedWithError()
+        public async Task WhenEmailIsNotValidThenFormIsRedisplayedWithError()
         {
             var user = ValidUser();
-            mockUserService.Setup(s => s.AddUserAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .ThrowsAsync(new DuplicateEmailException(user.Email));
+            mockUserService.Setup(s => s.AddUserAsync(It.IsAny<UserToCreate>()))
+                .ThrowsAsync(new InvalidEmailException(user.Email));
 
             ActionResult result = await controller.PostRegistrationForm(user);
 

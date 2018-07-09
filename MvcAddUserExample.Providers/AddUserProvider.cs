@@ -32,7 +32,7 @@ namespace MvcAddUserExample.Providers
                     }
                     catch (SqlException e) when (e.Message.Contains("Violation of UNIQUE KEY constraint"))
                     {
-                        throw new DuplicateEmailException(email);
+                        throw new InvalidEmailException($"Email address {email} is already associated with a user account.");
                     }
                 }
             }

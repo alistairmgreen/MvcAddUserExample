@@ -4,6 +4,7 @@ using MvcAddUserExample.Constants;
 using MvcAddUserExample.Core.Interfaces.Services;
 using System.Threading.Tasks;
 using MvcAddUserExample.Core.Exceptions;
+using MvcAddUserExample.Core.Models;
 
 namespace MvcAddUserExample.Controllers
 {
@@ -39,9 +40,10 @@ namespace MvcAddUserExample.Controllers
             {
                 try
                 {
-                    await userService.AddUserAsync(viewModel.Email, viewModel.Password);
+                    var user = new UserToCreate(viewModel.Email, viewModel.Password);
+                    await userService.AddUserAsync(user);
                 }
-                catch (DuplicateEmailException e)
+                catch (InvalidEmailException e)
                 {
                     ModelState.AddModelError("Email", e.Message);
                 }

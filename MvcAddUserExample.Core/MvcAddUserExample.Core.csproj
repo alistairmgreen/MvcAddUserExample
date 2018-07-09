@@ -40,10 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\DuplicateEmailException.cs" />
+    <Compile Include="Exceptions\InvalidEmailException.cs" />
     <Compile Include="Interfaces\Providers\IAddUserProvider.cs" />
     <Compile Include="Interfaces\Services\IPasswordService.cs" />
     <Compile Include="Interfaces\Services\IUserService.cs" />
+    <Compile Include="Interfaces\Services\IUserValidationService.cs" />
+    <Compile Include="Models\UserToCreate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
