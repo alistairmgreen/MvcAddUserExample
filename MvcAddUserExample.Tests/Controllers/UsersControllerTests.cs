@@ -4,6 +4,7 @@ using FluentAssertions;
 using Moq;
 using MvcAddUserExample.Constants;
 using MvcAddUserExample.Controllers;
+using MvcAddUserExample.Core.Exceptions;
 using MvcAddUserExample.Core.Interfaces.Services;
 using MvcAddUserExample.Models;
 using NUnit.Framework;
@@ -88,6 +89,24 @@ namespace MvcAddUserExample.Tests.Controllers
               .Should()
               .BeDecoratedWith<ValidateAntiForgeryTokenAttribute>(
                 "because all Actions with HttpPost require ValidateAntiForgeryToken");
+        }
+
+        [Test]
+        public async Task WhenEmailIsNotUniqueThenFormIsRedisplayedWithError()
+        {
+            var user = ValidUser();
+            mockUserService.Setup(s => s.AddUserAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .ThrowsAsync(new DuplicateEmailException(user.Email));
+
+            ActionResult result = await controller.PostRegistrationForm(user);
+
+            controller.ModelState.IsValid.Should().BeFalse("because the email address is not unique");
+
+            controller.ModelState.Should().ContainKey("Email", "because the email address is not unique")
+                .WhichValue.Errors.Should().NotBeEmpty("because there was a validation error");
+
+            result.Should().BeOfType<ViewResult>()
+               .Which.ViewName.Should().Be(ViewNames.REGISTRATION_FORM, "because the registration form should be redisplayed");
         }
 
         private UserRegistrationViewModel ValidUser()

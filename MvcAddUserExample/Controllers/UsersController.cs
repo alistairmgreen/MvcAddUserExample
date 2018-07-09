@@ -3,6 +3,7 @@ using MvcAddUserExample.Models;
 using MvcAddUserExample.Constants;
 using MvcAddUserExample.Core.Interfaces.Services;
 using System.Threading.Tasks;
+using MvcAddUserExample.Core.Exceptions;
 
 namespace MvcAddUserExample.Controllers
 {
@@ -35,9 +36,16 @@ namespace MvcAddUserExample.Controllers
                 return View(ViewNames.REGISTRATION_FORM, viewModel);
             }
 
-            await userService.AddUserAsync(viewModel.Email, viewModel.Password);
-
-            return RedirectToAction(ActionNames.REGISTRATION_SUCCESS);
+            try
+            {
+                await userService.AddUserAsync(viewModel.Email, viewModel.Password);
+                return RedirectToAction(ActionNames.REGISTRATION_SUCCESS);
+            }
+            catch (DuplicateEmailException e)
+            {
+                ModelState.AddModelError("Email", e.Message);
+                return View(ViewNames.REGISTRATION_FORM, viewModel);
+            }
         }
 
         [HttpGet]

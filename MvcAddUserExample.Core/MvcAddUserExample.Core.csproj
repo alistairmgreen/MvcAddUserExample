@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\DuplicateEmailException.cs" />
     <Compile Include="Interfaces\Providers\IAddUserProvider.cs" />
     <Compile Include="Interfaces\Services\IPasswordService.cs" />
     <Compile Include="Interfaces\Services\IUserService.cs" />

@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using MvcAddUserExample.Core.Exceptions;
 using MvcAddUserExample.Core.Interfaces.Providers;
 
 namespace MvcAddUserExample.Providers
@@ -25,7 +26,14 @@ namespace MvcAddUserExample.Providers
                     command.Parameters.Add(new SqlParameter("@email", email));
                     command.Parameters.Add(new SqlParameter("@passwordhash", passwordHash));
 
-                    await command.ExecuteNonQueryAsync();
+                    try
+                    {
+                        await command.ExecuteNonQueryAsync();
+                    }
+                    catch (SqlException e) when (e.Message.Contains("Violation of UNIQUE KEY constraint"))
+                    {
+                        throw new DuplicateEmailException(email);
+                    }
                 }
             }
         }
