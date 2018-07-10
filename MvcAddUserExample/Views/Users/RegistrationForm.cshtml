@@ -12,13 +12,13 @@
 {
     @Html.AntiForgeryToken()
 
-    <div>
+    <div class="form-row">
         @Html.LabelFor(model => model.Email)
-        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { required = true, placeholder = "username@example.com" } })
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { required = true, placeholder = "username@example.com", autofocus = true } })
         @Html.ValidationMessageFor(model => model.Email)
     </div>
 
-    <div>
+    <div class="form-row">
         @Html.LabelFor(model => model.Password)
         @Html.EditorFor(model => model.Password, new { htmlAttributes = new {
             required = true,
@@ -28,7 +28,7 @@
         @Html.ValidationMessageFor(model => model.Password)
     </div>
 
-    <div>
+    <div class="form-row">
         @Html.LabelFor(model => model.ConfirmPassword)
         @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new {
        required = true,
