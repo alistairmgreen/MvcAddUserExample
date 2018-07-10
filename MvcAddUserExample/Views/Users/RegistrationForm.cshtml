@@ -15,6 +15,7 @@
     <div class="form-row">
         @Html.LabelFor(model => model.Email)
         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { required = true, placeholder = "username@example.com", autofocus = true } })
+        <span class="validity-indicator"></span>
         @Html.ValidationMessageFor(model => model.Email)
     </div>
 
@@ -25,6 +26,7 @@
             placeholder = $"At least {PasswordRestrictions.MINIMUM_LENGTH} characters",
             minlength = PasswordRestrictions.MINIMUM_LENGTH
         }})
+        <span class="validity-indicator"></span>
         @Html.ValidationMessageFor(model => model.Password)
     </div>
 
@@ -36,6 +38,7 @@
        minlength = PasswordRestrictions.MINIMUM_LENGTH
    }
    })
+        <span class="validity-indicator"></span>
         @Html.ValidationMessageFor(model => model.ConfirmPassword)
     </div>
 

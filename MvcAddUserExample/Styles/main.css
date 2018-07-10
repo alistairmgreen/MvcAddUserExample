@@ -16,7 +16,7 @@ div.form-row {
 .form-row input {
     display: inline-block;
     width: 250px;
-    margin-right: 20px;
+    margin-right: 10px;
     border-width: 2px;
     border-style:solid;
 }
@@ -25,9 +25,19 @@ div.form-row {
     border-color: darkgreen;
 }
 
+    .form-row input:valid + span.validity-indicator::after {
+        content: '\002713'; /* Tick mark */
+        color: darkgreen;
+    }
+
 .form-row input:invalid {
     border-color: red;
 }
+
+    .form-row input:invalid + span.validity-indicator::after {
+        content: '\00274c'; /* Cross */
+        color: red;
+    }
 
 button {
     background-color: darkgray;
