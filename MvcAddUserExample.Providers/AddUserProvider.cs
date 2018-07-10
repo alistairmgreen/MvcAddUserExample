@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using MvcAddUserExample.Core.Exceptions;
@@ -12,28 +12,35 @@ namespace MvcAddUserExample.Providers
     /// </summary>
     public class AddUserProvider : IAddUserProvider
     {
+        private readonly IConnectionFactory connectionFactory;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddUserProvider"/> class.
+        /// </summary>
+        /// <param name="factory">A provider that creates connections to the SQL database.</param>
+        public AddUserProvider(IConnectionFactory factory)
+        {
+            connectionFactory = factory;
+        }
+
         /// <inheritdoc />
         public async Task AddUserAsync(string email, string passwordHash)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["UserDatabase"].ConnectionString;
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = await connectionFactory.ConnectAsync())
             {
-                await connection.OpenAsync();
-                using (var command = connection.CreateCommand())
+                try
                 {
-                    command.CommandType = System.Data.CommandType.Text;
-                    command.CommandText = "INSERT INTO [dbo].[Users] (Email, PasswordHash) VALUES (@email, @passwordhash)";
-                    command.Parameters.Add(new SqlParameter("@email", email));
-                    command.Parameters.Add(new SqlParameter("@passwordhash", passwordHash));
-
-                    try
-                    {
-                        await command.ExecuteNonQueryAsync();
-                    }
-                    catch (SqlException e) when (e.Message.Contains("Violation of UNIQUE KEY constraint"))
-                    {
-                        throw new InvalidEmailException($"Email address {email} is already associated with a user account.");
-                    }
+                    await connection.ExecuteSqlStatementAsync(
+                     "INSERT INTO [dbo].[Users] (Email, PasswordHash) VALUES (@email, @passwordhash)",
+                      new Dictionary<string, object>
+                      {
+                        { "@email", email },
+                        { "@passwordhash", passwordHash }
+                      });
+                }
+                catch (SqlException e) when (e.Message.Contains("Violation of UNIQUE KEY constraint"))
+                {
+                    throw new InvalidEmailException($"Email address {email} is already associated with a user account.");
                 }
             }
         }

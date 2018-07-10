@@ -42,6 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddUserProvider.cs" />
+    <Compile Include="IConnectionFactory.cs" />
+    <Compile Include="SqlCommandHelper.cs" />
+    <Compile Include="ConnectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
